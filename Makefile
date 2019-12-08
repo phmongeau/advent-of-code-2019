@@ -1,5 +1,8 @@
-run: day5
-	./day5
+run: day6
+	./day6
+
+day6: day6.cpp
+	@g++ -g day6.cpp -o day6
 
 day5: day5.cpp
 	@g++ -g day5.cpp -o day5
