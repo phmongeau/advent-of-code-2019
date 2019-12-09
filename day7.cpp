@@ -16,7 +16,7 @@ struct computer {
     int output;
 };
 
-void run_programe(computer &cmp)
+int run_programe(computer &cmp)
 {
     // int INPUT = *inputs;
     // int OUTPUT = 0;
@@ -68,8 +68,9 @@ void run_programe(computer &cmp)
                 else if (cmp.input_index == 1)
                     memory[*(ptr+1)] = cmp.input2;
                 else {
-                    std::cout << "REQUESTED TOO MANY INPUTS" << std::endl;
-                    return;
+                    // wait for next input
+                    cmp.mem_index = ptr - memory;
+                    return 0;
                 }
                 cmp.input_index++;
                 ptr += 2;
@@ -78,7 +79,8 @@ void run_programe(computer &cmp)
                 // std::cout << "OUTPUT: " << mem1 << std::endl;
                 cmp.output = mem1;
                 ptr += 2;
-                return;
+                // cmp.mem_index = (ptr+2) - memory;
+                // return 0;
                 break;
             case 5: // jmp if true
                 // jump to mem2 if mem1 != 0 else go to next
@@ -99,6 +101,7 @@ void run_programe(computer &cmp)
             case 99:
                 // std::cout << "exit " << std::endl;
                 should_exit = 1;
+                // return 1;
                 break;
             default:
                 std::cout << "invalid op code: " << *ptr << std::endl;
@@ -106,6 +109,7 @@ void run_programe(computer &cmp)
                 break;
         }
     }
+    return 1;
 }
 
 int main()
@@ -132,37 +136,71 @@ int main()
     // };
 
 
-    // puzzle input
-    int start_memory[] = {
-        3,8,1001,8,10,8,105,1,0,0,21,30,47,64,81,98,179,260,341,422,99999,3,9,1001,9,5,9,4,9,99,3,9,1002,9,5,9,101,4,9,9,102,2,9,9,4,9,99,3,9,102,3,9,9,101,2,9,9,1002,9,3,9,4,9,99,3,9,1001,9,5,9,1002,9,3,9,1001,9,3,9,4,9,99,3,9,1002,9,3,9,101,2,9,9,102,5,9,9,4,9,99,3,9,1001,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,1001,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,1001,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,1001,9,2,9,4,9,99,3,9,101,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,1001,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,99,3,9,101,1,9,9,4,9,3,9,101,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,99,3,9,1001,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,1,9,9,4,9,3,9,102,2,9,9,4,9,3,9,1001,9,2,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,2,9,9,4,9,99,3,9,1001,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,1,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,1,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,99
+    // int start_memory[] = {
+    //     3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,
+// 27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5,
+    // };
 
-    };
+
+    // puzzle input
+    int start_memory[] = { 3,8,1001,8,10,8,105,1,0,0,21,30,47,64,81,98,179,260,341,422,99999,3,9,1001,9,5,9,4,9,99,3,9,1002,9,5,9,101,4,9,9,102,2,9,9,4,9,99,3,9,102,3,9,9,101,2,9,9,1002,9,3,9,4,9,99,3,9,1001,9,5,9,1002,9,3,9,1001,9,3,9,4,9,99,3,9,1002,9,3,9,101,2,9,9,102,5,9,9,4,9,99,3,9,1001,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,1001,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,1001,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,1001,9,2,9,4,9,99,3,9,101,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,1001,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,99,3,9,101,1,9,9,4,9,3,9,101,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,99,3,9,1001,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,1,9,9,4,9,3,9,102,2,9,9,4,9,3,9,1001,9,2,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,2,9,9,4,9,99,3,9,1001,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,1,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,1,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,99 };
 
     int size = (sizeof(start_memory)/sizeof(start_memory[0]));
 
     computer computers[5] = {};
 
-    std::vector<int> phase_settings = {0,1,2,3,4};
+    // std::vector<int> phase_settings = {0,1,2,3,4};
+    std::vector<int> phase_settings = {5,6,7,8,9};
     int max_output = -1;
+    // int halt = 0;
+
+    // init computers;
+    for (int i = 0; i < 5; ++i)
+    {
+        computers[i] = {};
+        computers[i].id = i;
+        computers[i].mem_size = size;
+        computers[i].mem_index = 0;
+        computers[i].memory = (int*)malloc(sizeof(int) * size);
+        memcpy(computers[i].memory, start_memory, size*sizeof(int));
+    }
+
     do {
-        int input_signals[] = {0,0,0,0,0,-1};
+        // reset to start memory
         for (int i = 0; i < 5; ++i)
         {
-            computers[i] = {};
-
-            computers[i].memory = (int*)malloc(sizeof(int) * size);
-            computers[i].id = i;
-            computers[i].mem_size = size;
-            computers[i].mem_index = 0;
-            computers[i].input1 = phase_settings[i];
-            computers[i].input2 = input_signals[i];
             memcpy(computers[i].memory, start_memory, size*sizeof(int));
-            run_programe(computers[i]);
-            input_signals[i+1] = computers[i].output;
+            computers[i].input_index = 0;
+            computers[i].mem_index = 0;
         }
-        if (input_signals[5] > max_output) max_output = input_signals[5];
+        int input_signals[] = {0,0,0,0,0,-1};
+        int cycle = 0;
+        int halt = 0;
+        while (halt == 0) {
+            for (int i = 0; i < 5; ++i)
+            {
+                computers[i].input1 = phase_settings[i];
+                computers[i].input2 = input_signals[i];
+                computers[i].input_index = cycle == 0 ? 0 : 1;
+                halt = run_programe(computers[i]);
+                input_signals[(i+1)%5] = computers[i].output;
+            }
+            ++cycle;
+        }
+        // std::cout << ".";
+        // std::cout << std::endl;
+        if (input_signals[0] > max_output) {
+            max_output = input_signals[0];
+            // for (auto i : phase_settings)
+            // {
+            //     std::cout << i << ", ";
+            // }
+            // std::cout << std::endl;
+            // std::cout << input_signals[0] << " == " << computers[4].output << std::endl;
+        }
 
     } while(std::next_permutation(phase_settings.begin(), phase_settings.end()));
+    // std::cout << std::endl;
     std::cout << "final output: " << max_output;
 
 
