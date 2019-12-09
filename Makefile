@@ -1,5 +1,5 @@
-run: day7
-	./day7
+run: day8
+	./day8
 
 %: %.cpp
 	@g++ -g $< -o $@
