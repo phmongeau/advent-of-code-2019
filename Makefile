@@ -1,5 +1,5 @@
-run: day8
-	./day8
+run: day9
+	./$<
 
 %: %.cpp
-	@g++ -g $< -o $@
+	@g++ -g -fsanitize=address $< -o $@
